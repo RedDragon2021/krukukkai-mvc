@@ -1,0 +1,1545 @@
+<!-- Pattern 
+<!DOCTYPE html>
+<html>
+< %- include('partials/header.ejs') %>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+
+        < %- include('partials/navbar.ejs') %>
+        < %- include('partials/sidebar.ejs') %>
+
+        <div class="content-wrapper">
+            [[ ADD YOUR CONTENTS TO HERE ]]
+        </div>
+
+        < %- include('partials/footer.ejs') %>
+
+    </div>
+
+        < %- include('partials/script_src.ejs') %>
+        < %- include('partials/script_extend.ejs') %>
+</body>
+
+</html>
+-->
+
+<!DOCTYPE html>
+<html>
+<%- include('partials/header.ejs') %>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<!-- <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed"> -->
+    <div class="wrapper">
+
+        <%- include('partials/navbar.ejs') %>
+        <%- include('partials/sidebar.ejs') %>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header pb-0">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h5 class="m-0 text-dark"><%= header_name %></h5>
+                            <p id="_lastUpdated" class="font-weight-light">
+                                <!-- (อัพเดทข้อมูลล่าสุด เวลา 06:00 น.) -->
+                            </p>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                <li class="breadcrumb-item active">หน้าแรก (แดชบอร์ด)</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <!-- Small boxes (Stat box) -->
+                    <div class="row">
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-primary">
+                                <div class="inner">
+                                    <h4>
+                                        <span id="_countEnrolledCourses"></span>
+                                        วิชา
+                                    </h4>
+                                    <p>ลงทะเบียนเรียน</p>
+                                </div>
+                                <div class="icon" style="zoom: 0.85;">
+                                    <i class="fas fa-cart-plus"></i>
+                                </div>
+                                <!-- <div class="icon"> -->
+                                    <!-- <i class="ion ion-android-cart"></i> -->
+                                <!-- </div> -->
+                                <!-- <a href="#" class="small-box-footer">ดูข้อมูลเพิ่มเติม
+                                    <i class="fas fa-arrow-circle-right"></i></a> -->
+                            </div>
+                        </div>
+                        <!-- ./col -->
+
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-success">
+                                <div class="inner">
+                                    <h4>
+                                        <span id="_countFinishedCourses"></span> 
+                                        วิชา
+                                    </h4>
+                                    <p>เรียนจบผ่านเกณฑ์</p>
+                                </div>
+                                <div class="icon" style="zoom: 0.85;">
+                                    <i class="fas fa-cart-arrow-down"></i>
+                                </div>
+                                <!-- <div class="icon">
+                                    <i class="ion ion-person-add"></i>
+                                </div> -->
+                                <!-- <a href="#" class="small-box-footer">ดูข้อมูลเพิ่มเติม 
+                                    <i class="fas fa-arrow-circle-right"></i></a> -->
+                            </div>
+                        </div>
+                        <!-- ./col -->
+
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-warning">
+                                <div class="inner">
+                                    <h4>
+                                        <span id="_countLearningCourses"></span> 
+                                        วิชา
+                                    </h4>
+                                    <p>กำลังเรียน</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-cash"></i>
+                                </div>
+                                <!-- <div class="icon">
+                                    <i class="ion ion-ios-paper"></i>
+                                </div> -->
+                                <!-- <a href="#" class="small-box-footer">ดูข้อมูลเพิ่มเติม 
+                                    <i class="fas fa-arrow-circle-right"></i></a> -->
+                            </div>
+                        </div>
+                        <!-- ./col -->
+
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-danger">
+                                <div class="inner">
+                                    <h4>
+                                        <span id="_countNotLearnedCourses"></span> 
+                                        วิชา
+                                    </h4>
+                                    <p></p>
+                                    <p class="text-sm mb-2">
+                                        <!--
+                                        <span data-toggle="tooltip" data-placement="bottom" title="บิลที่ 'เบิกหมด' หรือ 'ไปฝากต่อ'">
+                                            <i class="far fa-question-circle fa-xs"></i>
+                                        </span> 
+                                        -->
+                                        ยังไม่ได้เริ่มเรียน
+                                    </p>
+                                </div>
+                                <div class="icon" style="zoom: 0.55;">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                </div>
+                                <!-- <div class="icon">
+                                    <i class="ion ion-cash"></i>
+                                </div> -->
+                                <!-- <a href="#" class="small-box-footer">ดูข้อมูลเพิ่มเติม 
+                                    <i class="fas fa-arrow-circle-right"></i></a> -->
+                            </div>
+                        </div>
+                        <!-- /.col -->
+
+                    </div>
+                    <!-- /.row -->
+
+                    <!-- Main row -->
+                    <div class="row">
+                        <!-- left column -->
+                        <div class="col-md-6">
+
+                            <!-- Calendar -->
+                            <div class="card bg-gradient-primary">
+                            <!-- <div class="card bg-primary"> -->
+                            <!-- <div class="card"> -->
+                                <div class="card-header border-0 bg-primary">
+                                    <h3 class="card-title">
+                                        <i class="far fa-calendar-alt"></i>
+                                        ปฏิทิน (Calendar)
+                                    </h3>
+                                    <!-- tools card -->
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <!-- /. tools -->
+                                </div>
+                                <!-- /.card-header -->
+
+                                <div class="card-body pt-0">
+                                    <!--The calendar -->
+                                    <div id="calendar">
+                                        <div class="container text-center">
+                                            <iframe class="responsive-iframe" style="width: 100%; height: 300px;" src="https://calendar.google.com/calendar/embed?height=300&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=Asia%2FBangkok&amp;showTitle=0&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=1&amp;showTz=0&amp;hl=th&amp;src=ZW4udGgjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&amp;color=%237986CB" style="border-width:0" frameborder="0" scrolling="no">
+                                            </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+
+                            <!-- BAR CHART -->
+                            <!--
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h3 class="card-title">จำนวนบิลฝากใหม่ ฝากต่อ และบิลเบิกสินค้า</h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                                class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i
+                                                class="fas fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <!- <div class="chart"> ->
+                                    <div class="chartBar">
+                                        <canvas id="barChart"
+                                            style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;">
+                                        </canvas>
+                                    </div>
+                                </div>
+                                <!- /.card-body ->
+                            </div>
+                            <!- /.card ->
+                            -->
+
+                        </div>
+                        <!-- /.col (LEFT) -->
+
+                        <div class="col-md-6">
+                            <!-- PIE CHART -->
+                            <div class="card card-dark">
+                                <div class="card-header">
+                                    <h3 class="card-title">ความก้าวหน้าของการเรียนในแต่ละวิชา</h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                                class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i
+                                                class="fas fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <!-- 
+                                        <div class="chartPie">
+                                        <canvas id="pieChart"
+                                            style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;">
+                                        </canvas>
+                                    </div>
+                                    <span class="text-sm float-right">
+                                        รวม <span id="_countAllDepsOpened"></span> บิลฝาก
+                                    </span> 
+                                    -->
+
+                                    <!-- ProgressBar status () -->
+                                    <small>วิชา 30000-1301 การจัดการทรัพยากรธรรมชาติ พลังงานและสิ่งแวดล้อม</small>
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+                                    </div>
+                                    <small>วิชา การเขียนโปรแกรมคอมพิวเตอร์-ต้นแบบ</small>
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+                                    </div>
+                                    <small>วิชาที่ 3</small>
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+                                    </div>
+                                    <small>วิชาที่ 4</small>
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                                    </div>
+                                    <small>วิชาที่ 5</small>
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">10%</div>
+                                    </div>
+                                    <small>วิชาที่ 6 (ยังไม่ได้เริ่มเรียน)</small>
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+
+                            <!-- Deposit Remain Day DataTable (OLD HERE) -->
+                            
+                            <!-- AREA CHART -->
+                            <!-- <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">ปริมาณบิลฝากและบิลเบิกสินค้า</h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                                class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i
+                                                class="fas fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart">
+                                        <canvas id="areaChart"
+                                            style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                    </div>
+                                </div> -->
+                                <!-- /.card-body -->
+                            <!-- </div> -->
+                            <!-- /.card -->
+
+                        </div>
+                        <!-- /.col (RIGHT) -->
+
+                        <div class="col-12">
+                            <!-- Deposit Remain Day DataTable -->
+                            <div class="card card-danger">
+                                <div class="card-header">
+                                    <h3 class="card-title">บิลฝากสินค้า ที่จะครบดิวภายใน 3 วันนี้</h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                                class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i
+                                                class="fas fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="card-body py-2">
+                                    <table id="_tableDepositRemDays"
+                                        class="table table-sm text-sm table-bordered table-striped table-hover display nowrap"
+                                        width="100%">
+                                        <thead class="thead-dark text-center">
+                                            <tr>
+                                                <th>
+                                                    Lot-Code
+                                                    <span>
+                                                        <i class="fas fa-question-circle fa-xs" 
+                                                        data-toggle="tooltip" data-placement="top" title='สีน้ำเงิน คือ บิลที่ "จ่ายเงินแล้ว" &nbsp; สีแดง คือ บิลที่ "ค้างจ่าย"' ></i>
+                                                    </span>
+                                                </th>
+                                                <th>ผู้ฝาก</th>
+                                                <th>วันครบดิว</th>
+                                                <th>สถานะ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="text-align: center;">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                            
+                            <!-- Deposit Remain Day DataTable -->
+                            <!--
+                            <div class="card card-warning">
+                                <div class="card-header">
+                                    <!- <h3 class="card-title">รายงานสรุปรายได้ ประจำเดือนนี้ หรือเลือกช่วงวันที่ต้องการ</h3> ->
+                                    <div class="row">
+                                        <h6 class="pt-/ pr-0 mr-auto col-form-label text-md">
+                                            <b>รายงานสรุปรายได้ ประจำเดือนนี้ </b>
+                                        </h6>
+                                        <label for="_drp_beginDate" class="col-form-label d-none d-sm-inline-block">หรือ เลือกช่วงวันที่ต้องการ:
+                                        </label>
+                                        <!- <div class="col"> ->
+                                            <!- //CODE daterangepicker HERE ->
+                                            <div id="_drp_beginDate" class="form-control form-control-sm font-weight-bold mx-2" 
+                                                style="font-size: 100%; background: #fff; cursor: pointer; padding: 5px 10px; width: 269px;">
+                                                <i class="far fa-calendar-alt"></i> &nbsp; 
+                                                <span></span> &nbsp; <i class="fa fa-caret-down"></i>
+                                            </div>
+                                        <!- </div> ->
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                                    class="fas fa-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i
+                                                    class="fas fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body py-2">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md"></div>
+                                        <div class="col-12 col-md-10">
+                                            <table id="_tableIncomeSummaryReport" width="100%"
+                                                class="table table-sm text-sm table-bordered table-striped table-hover display nowrap">
+                                                <thead class="thead-dark text-center">
+                                                    <tr>
+                                                        <th>วันที่</th>
+                                                        <th>
+                                                            <span class="d-none d-sm-inline-block">ยอด</span>ค่าฝาก
+                                                        </th>
+                                                        <th>ค้างจ่าย</th>
+                                                        <th>จ่ายทันที</th>
+                                                        <th>ชำระหนี้</th>
+                                                        <th>
+                                                            รวม<span class="d-none d-sm-inline-block">ชำระ</span>
+                                                            <span>
+                                                                <i class="fas fa-question-circle fa-xs" 
+                                                                data-toggle="tooltip" data-placement="top" title='จ่ายทันที + ชำระหนี้ค้างจ่าย'></i>
+                                                            </span>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="text-align: right;">
+                                                </tbody>
+                                                <tfoot style="text-align: right;">
+                                                    <th>
+                                                        <h6>
+                                                            รวม
+                                                        </h6>
+                                                    </th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                        <div class="col-md"></div>
+                                    </div>
+                                </div>
+                                <!- /.card-body ->
+                            </div>
+                            <!- /.card ->
+                            -->
+
+
+                        </div>
+                    </div>
+                    <!-- /.row (main row) -->
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+    <%- include('partials/footer.ejs') %>
+
+    </div>
+    <!-- ./wrapper -->
+
+    <%- include('partials/script_src.ejs') %>
+    <%- include('partials/script_extend.ejs') %>
+
+    <script>
+        //Set actived menu "หน้าแรก (แดชบอร์ด)"
+        $("#_menu0").addClass("active");
+
+        let _start0 = moment().startOf('year');
+        let _end0 = moment().endOf('year');
+        let _start1 = moment().startOf('month');
+        let _end1 = moment().endOf('month');
+
+        let _DT_deposits_cache = [];
+
+        let _tableIncomeSummaryReport = $("#_tableIncomeSummaryReport").DataTable({
+            // pageLength: 31,
+            // order: [[0, "desc"]],
+            order: [[0, 'asc']],
+            scrollX: true,
+            // scrollY: 300,
+            // scrollCollapse: true, 
+            columns: [
+                { data: "date_str" },
+                { data: "total_cost" },
+                { data: "total_cost_not_paid" },
+                { data: "total_cost_paid" },
+                { data: "total_cost_debt" },
+                { data: "total_cost_paid_with_debt" }
+            ],
+            columnDefs: [
+                {
+                    // targets: 10,
+                    // searchable: false,
+                    // orderable: false,
+                }
+            ],
+            language: {
+                lengthMenu: 'แสดงข้อมูล : <select class="form-control form-control-sm">' +
+                    '<option value="6">6</option>' +
+                    '<option value="10">10</option>' +
+                    '<option value="20">20</option>' +
+                    '<option value="30">30</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="100">100</option>' +
+                    '<option value="-1">All</option>' +
+                    '</select> แถว/หน้า',
+                search: "ค้นหาขั้นเทพ :",
+                info: "แสดงข้อมูล แถวที่ _START_ - _END_  จาก _TOTAL_ แถว",
+                infoEmpty: "แสดงข้อมูล แถวที่ 0 - 0  จาก 0 แถว",
+                infoFiltered: "(ค้นหาจากข้อมูลทั้งหมด _MAX_ แถว)",
+                zeroRecords: "ไม่พบข้อมูลรายได้ในช่วงเวลาดังกล่าว",
+                paginate: {
+                    "first": "หน้าแรก",
+                    "last": "หน้าสุดท้าย",
+                    "next": "หน้าถัดไป",
+                    "previous": "หน้าก่อน"
+                }
+            },
+            rowCallback: function (row, data, index) {
+                $(row).find('td:eq(0)').css({ 'font-weight':'bold', 'text-align':'center' });
+                $(row).find('td:eq(1)').css({ 'font-weight':'bold', 'background-color':'#e6ffe9' });
+                $(row).find('td:eq(2)').css({ 'font-weight':'bold','color':'red', 'background-color':'#fbe7e5' });
+                $(row).find('td:eq(3)').css({ 'font-weight':'bold','color':'blue' });
+                $(row).find('td:eq(4)').css({ 'font-weight':'bold','color':'blue', 'background-color':'#fbe7e5' });
+                $(row).find('td:eq(5)').css({ 'font-weight':'bold', 'color':'blue', 'background-color':'#C5F8CD' });
+            },
+            footerCallback: function (row, data, start, end, display) {
+                var api = this.api(), data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                // Total over all pages
+                let totalCost = 0;
+                if (api.column(1).data().length) {
+                    totalCost = api
+                        .column(1)
+                        .data()
+                        .reduce(function (a, b) {
+                            // alert("a,b = "+a+","+b);
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                let totalCost_notPaid = 0;
+                if (api.column(2).data().length) {
+                    totalCost_notPaid = api
+                        .column(2)
+                        .data()
+                        .reduce(function (a, b) {
+                            // alert("c2 a,b = "+a+","+b);
+                            // alert("c2 a,b = "+(""+a).indexOf(' ')+","+(""+b).indexOf(' '));
+                            a = (""+a).indexOf(' ')>=0 ? (""+a).split(' ')[0]:a;
+                            b = (""+b).indexOf(' ')>=0 ? (""+b).split(' ')[0]:b;
+                            // alert("c2 a,b = "+a+","+b);
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                let totalCost_paid = 0;
+                if (api.column(3).data().length) {
+                    totalCost_paid = api
+                        .column(3)
+                        .data()
+                        .reduce(function (a, b) {
+                            // alert("c3 a,b = "+a+","+b);
+                            a = (""+a).indexOf(' ')>=0 ? (""+a).split(' ')[0]:a;
+                            b = (""+b).indexOf(' ')>=0 ? (""+b).split(' ')[0]:b;
+                            // alert("c3 a,b = "+a+","+b);
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                let totalCost_debt = 0;
+                if (api.column(4).data().length) {
+                    totalCost_debt = api
+                        .column(4)
+                        .data()
+                        .reduce(function (a, b) {
+                            // alert("c4 a,b = "+a+","+b);
+                            a = (""+a).indexOf(' ')>=0 ? (""+a).split(' ')[0]:a;
+                            b = (""+b).indexOf(' ')>=0 ? (""+b).split(' ')[0]:b;
+                            // alert("c4 a,b = "+a+","+b);
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                let totalCost_paidWithDebt = 0;
+                if (api.column(5).data().length) {
+                    totalCost_paidWithDebt = api
+                        .column(5)
+                        .data()
+                        .reduce(function (a, b) {
+                            // alert("a,b = "+a+","+b);
+                            a = (""+a).indexOf(' ')>=0 ? (""+a).split(' ')[0]:a;
+                            b = (""+b).indexOf(' ')>=0 ? (""+b).split(' ')[0]:b;
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                // Update footer
+                $( api.column(1).footer() ).html("<h6>"+moneyFormat(totalCost)+"</h6>")
+                                            .css({ 'background-color':'#e6ffe9'});
+                $( api.column(2).footer() ).html("<h6>"+moneyFormat(totalCost_notPaid)+"</h6>")
+                                            .css({ 'color':'red', 'background-color':'#fbe7e5'});
+                $( api.column(2).footer() ).html("<h6>"+moneyFormat(totalCost_notPaid)+"</h6>")
+                                            .css({ 'color':'red', 'background-color':'#fbe7e5'});
+                $( api.column(3).footer() ).html("<h6>"+moneyFormat(totalCost_paid)+"</h6>")
+                                            .css({ 'color':'blue'});
+                $( api.column(4).footer() ).html("<h6>"+moneyFormat(totalCost_debt)+"</h6>")
+                                            .css({ 'color':'blue', 'background-color':'#fbe7e5'});
+                $( api.column(5).footer() ).html("<h6>"+moneyFormat(totalCost_paidWithDebt)+"</h6>")
+                                            .css({ 'color':'blue', 'background-color':'#C5F8CD'});
+
+            },
+            // retrieve: true
+            // responsive: true,
+            searching: false,    //default=true
+            // ordering: false      //default=true
+            lengthChange: false, //default=true
+            paging: false,       //default=true
+            // autoWidth: false,    //default=true
+            info: false,         //default=true
+        });
+
+        let getDepositCostToDataTable = () => {
+            let start_date = new Date(_start1);
+            let end_date = new Date(_end1)
+            // let date_filter_of = "begin_date";
+            let date_filter_of = "begin_date_or_paid_date";
+            let new_next_opened_closed_filter = '';
+
+            if(_DT_deposits_cache.length>0 && (start_date<=moment() && end_date>=moment()) ){
+                start_date = moment().startOf('day');
+                end_date = moment().endOf('day');
+            }
+
+            // alert("start_date/end_date = "+ new Date(start_date) + '/'+ new Date(end_date));
+
+            $.ajax({
+                url: '/_getDeposits',
+                method: 'POST',
+                data: JSON.stringify({ start_date, end_date, date_filter_of, new_next_opened_closed_filter }),
+
+                contentType: 'application/json',
+                success: function (resp) {
+                    let { deposits } = resp;
+                    // alert('deposits = '+JSON.stringify(deposits));
+
+                    let real_total_cost = 0;
+                    let total_cost = 0;
+                    let total_cost_not_paid = 0;
+                    let total_cost_paid = 0;
+                    let total_cost_debt = 0;
+
+                    let total_cost_not_paid_str = "";
+                    let total_cost_paid_str = "";
+
+                    let total_cost_paid_with_debt = 0;
+                    let paid_date_list = [];
+                    // let dataTable_deposits = $.map(deposits, function (obj, i) {
+                    let DT_deposits = $.map(deposits, function (obj, i) {
+                        let date_str = moment(obj.begin_date).format('YYYY-MM-DD');
+                        obj.date_str = date_str;
+                        let paid_date_str = moment(obj.paid_date).format('YYYY-MM-DD');
+
+                        // alert("date_str="+date_str+" , paid_date_str="+paid_date_str);
+                        
+                        let new_total_cost = parseFloat(obj.total_cost.$numberDecimal);
+                        let new_debt_cost = parseFloat(obj.debt_cost.$numberDecimal);
+                        let real_total_cost = new_total_cost - new_debt_cost;
+                        total_cost += real_total_cost;
+                        if(real_total_cost>0){
+                            if(date_str!=paid_date_str){
+                                total_cost_not_paid += real_total_cost;
+    
+                                if(total_cost_not_paid_str!=""){
+                                    total_cost_not_paid_str += ' + ';
+                                }
+                                total_cost_not_paid_str += real_total_cost;
+                            }else {
+                                total_cost_paid += real_total_cost;
+    
+                                if(total_cost_paid_str!=""){
+                                    total_cost_paid_str += ' + ';
+                                }
+                                total_cost_paid_str += real_total_cost;
+                            }
+                        }
+                        
+                        let obj_paid_date = {};
+                        if(paid_date_str.indexOf('1970')<0){
+                            let index = paid_date_list.findIndex((data) => data.date_str === paid_date_str);
+                            if(index>=0){
+                                paid_date_list[index].cost += new_total_cost;
+                                if(paid_date_str!=date_str){
+                                    paid_date_list[index].cost_str += ' + '+new_total_cost;
+                                }
+                            }else {
+                                obj_paid_date = { 
+                                    date_str: paid_date_str, 
+                                    cost: new_total_cost,
+                                    cost_str: paid_date_str!=date_str ? ''+new_total_cost : '0'
+                                };
+                            }
+                        }
+
+                        // alert('obj_paid_date.cost = '+obj_paid_date.cost);
+                        let paid_date = new Date(obj.paid_date);
+                        if(obj_paid_date.cost){
+                            if(paid_date>=start_date && paid_date<=end_date){
+                                paid_date_list.push(obj_paid_date);
+                            }
+                            // alert('i='+i+' .. '+JSON.stringify(paid_date_list));
+                        }
+
+                        // alert("total_cost_paid_str = "+total_cost_paid_str);
+                        // alert("total_cost_not_paid_str = "+total_cost_not_paid_str);
+                        obj.total_cost = moneyFormat(total_cost);
+                        obj.total_cost_not_paid = moneyFormat(total_cost_not_paid)+' ';
+                        if(total_cost_not_paid>0){
+                            obj.total_cost_not_paid += 
+                                                '<span><i class="fas fa-question-circle fa-xs" '+
+                                                'data-toggle="tooltip" data-placement="right" title="'+total_cost_not_paid_str+'">'+
+                                                '</i></span>';
+                        }
+                        obj.total_cost_paid = moneyFormat(total_cost_paid)+' ';
+                        if(total_cost_paid>0){
+                            obj.total_cost_paid += 
+                                                '<span><i class="fas fa-question-circle fa-xs" '+
+                                                'data-toggle="tooltip" data-placement="right" title="'+(total_cost_paid_str=="" ? "0":total_cost_paid_str)+'">'+
+                                                '</i></span>';
+                        }
+                        obj.total_cost_debt = moneyFormat(0.00)+' ';
+                        obj.total_cost_paid_with_debt = moneyFormat(0.00);
+
+                        // alert("i="+i+" ,"+date_str+" => total_cost_not_paid = "+total_cost_not_paid);
+
+                        let begin_date = new Date(obj.begin_date);
+                        if(i==deposits.length-1){
+                            return obj;
+                        }else if(begin_date>=start_date && begin_date<=end_date){
+                        // }else{
+                            let date_str_next = moment(deposits[i+1].begin_date).format('YYYY-MM-DD');
+                            // alert(date_str+' vs '+date_str_next);
+                            if(date_str!=date_str_next){
+                                total_cost = 0;
+                                total_cost_not_paid = 0;
+                                total_cost_paid = 0;
+
+                                total_cost_not_paid_str = "";
+                                total_cost_paid_str = "";
+                                
+                                return obj;
+                            }
+                        }else{
+                            total_cost = 0;
+                            total_cost_not_paid = 0;
+                            total_cost_paid = 0;
+
+                            total_cost_not_paid_str = "";
+                            total_cost_paid_str = "";
+                        }
+
+                    });
+                    // alert('DT_deposits = '+JSON.stringify(DT_deposits));
+                    // alert('paid_date_list = '+JSON.stringify(paid_date_list));
+
+                    let obj_debt_cost = [];
+                    for(let i=0; i<paid_date_list.length; i++){
+                        let paid_date_str = paid_date_list[i].date_str;
+                        let paid_cost = paid_date_list[i].cost;
+                        let paid_cost_str = paid_date_list[i].cost_str;
+                        let debt_cost = 0.00;
+                        let index = DT_deposits.findIndex((data) => data.date_str === paid_date_str);
+                        // alert("paid_date_str="+paid_date_str+" , "+"index="+index);
+                        if(index==-1){
+                            debt_cost = paid_cost;
+                            let obj_new_row = {
+                                date_str: paid_date_str,
+                                total_cost: moneyFormat(0.00),
+                                total_cost_not_paid: moneyFormat(0.00),
+                                total_cost_paid: moneyFormat(0.00),
+                                total_cost_debt: moneyFormat(debt_cost)+' ',
+                                total_cost_paid_with_debt: moneyFormat(paid_cost)
+                            }
+                            let ind = DT_deposits.push(obj_new_row) - 1;
+                            // alert('ind1 = '+ind);
+
+                            obj_debt_cost.push({
+                                index: ind,
+                                debt_cost_str: paid_cost_str
+                            });
+                        }else {
+                            let total_cost_paid_ = DT_deposits[index].total_cost_paid.split(' ')[0];
+                            // alert('total_cost_paid_ = '+total_cost_paid_);
+                            
+                            // debt_cost = paid_cost - parseFloat(DT_deposits[index].total_cost_paid.replace(',',''));
+                            debt_cost = paid_cost - parseFloat(total_cost_paid_.replace(',',''));
+                            // alert('debt_cost = '+debt_cost);
+
+                            DT_deposits[index].total_cost_debt = moneyFormat(debt_cost)+' ';
+                            DT_deposits[index].total_cost_paid_with_debt = moneyFormat(paid_cost);
+
+                            let ind = -1;
+                            if(obj_debt_cost.length>0){
+                                ind = obj_debt_cost.findIndex((data) => data.index === index);
+                            }
+                            // alert('ind2 = '+ind);
+                            if(ind>0){
+                                obj_debt_cost[ind].debt_cost_str = paid_cost_str;
+                            }else{
+                                obj_debt_cost.push({
+                                    index: index,
+                                    debt_cost_str: paid_cost_str
+                                });
+                            }
+                        }
+                    }
+                    // alert('obj_debt_cost = '+JSON.stringify(obj_debt_cost));
+                    for(let i=0; i<obj_debt_cost.length; i++){
+                        let index = obj_debt_cost[i].index;
+                        let debt_cost_str = obj_debt_cost[i].debt_cost_str;
+                        if(debt_cost_str!="0"){
+                            DT_deposits[index].total_cost_debt += 
+                                                '<span><i class="fas fa-question-circle fa-xs" '+
+                                                'data-toggle="tooltip" data-placement="right" title="'+debt_cost_str+'">'+
+                                                '</i></span>';
+                        }
+                    }
+
+
+                    // alert('cache = '+JSON.stringify(_DT_deposits_cache));
+                    let leng = _DT_deposits_cache.length;
+                    if(leng>0){
+                    // if(leng>0 && ( start_date==moment().startOf('day') && end_date==moment().endOf('day') )){
+                        let today_str = moment().format('YYYY-MM-DD');
+                        let index = _DT_deposits_cache.findIndex((data) => data.date_str === today_str);
+                        // alert("index = "+index);
+                        if(index>=0){
+                            _DT_deposits_cache.splice(index, 1, DT_deposits[0]);
+                        }else if(DT_deposits.length>0){
+                            _DT_deposits_cache.push(DT_deposits[0]);
+                        }
+                        DT_deposits = _DT_deposits_cache;
+                    }
+
+                    _tableIncomeSummaryReport.clear().draw();
+                    _tableIncomeSummaryReport.rows.add(DT_deposits).draw();
+
+                    //Keep static data for future
+                    _DT_deposits_cache = DT_deposits;
+
+                    // let w = window.open('about:blank');
+                    // w.document.open();
+                    // w.document.write(JSON.stringify(_DT_deposits_cache));
+                    // w.document.close();
+                }
+            });
+        }
+        // getDepositCostToDataTable();
+
+        let getCountDeposits = async (new_next_opened_closed_filter, has_paid_filter, start, end) => {
+            let start_date = new Date(start);
+            let end_date = new Date(end);
+            let count = 0;
+            await $.ajax({
+                url: '/_getCountDeposits',
+                method: 'POST',
+                data: JSON.stringify({new_next_opened_closed_filter, has_paid_filter, start_date, end_date}),
+                contentType: 'application/json',
+                success: function(resp){
+                    count = resp.count;
+                }
+            });
+            return count;
+        }
+        
+        let getCountWithdraws = async (start, end) => {
+            let start_date = new Date(start);
+            let end_date = new Date(end);
+            let count = 0;
+            await $.ajax({
+                url: '/_getCountWithdraws',
+                method: 'POST',
+                data: JSON.stringify({ start_date, end_date }),
+                contentType: 'application/json',
+                success: function(resp){
+                    count = resp.count;
+                }
+            });
+            return count;
+        }
+
+        let initComponents = async () => {
+            /*
+            let countDeposits = await getCountDeposits("new", "", _start0, _end0);
+            let countDepNexts = await getCountDeposits("next", "", _start0, _end0);
+            let countAllDeps_notPaid = await getCountDeposits("opened", "false", _start0, _end0);
+            let countDepClosed = await getCountDeposits("closed", "", _start0, _end0);
+            let countAllDeps = await getCountDeposits("", "", _start0, _end0);
+            let countAllDepsOpened = await getCountDeposits("opened", "", _start0, _end0);
+            */
+            // alert(countDeposits+" , "+countDepNexts+" , "+countAllDeps_notPaid);
+
+            /*
+            $('#_countDeposits').html(countDeposits);
+            $('#_countDepNexts').html(countDepNexts);
+            $('#_countAllDeps_notPaid').html(countAllDeps_notPaid);
+            $('#_countDepClosed').html(countDepClosed);
+            $('#_countAllDeps').html(countAllDeps);
+            $('#_countAllDepsOpened').html(countAllDepsOpened);
+            */
+
+            $('#_countEnrolledCourses').html('6');
+            $('#_countFinishedCourses').html('2');
+            $('#_countLearningCourses').html('3');
+            $('#_countNotLearnedCourses').html('1');
+
+            let HHmm = moment().format('HH:mm');
+            $('#_lastUpdated').html('(อัพเดทข้อมูลล่าสุด เวลา '+HHmm+' น.)');
+        }
+        initComponents();
+
+        /*
+        let getArrDepositsRemDays = async () => {
+            let c_code = 'All';
+            // let start_date, end_date = null;
+            let start_date = moment().startOf('day');
+            let end_date = moment().add(15,'days').endOf('day');
+            // let date_filter_of = "";
+            let date_filter_of = "end_date";
+            let arr_rem_days = [];
+
+            await $.ajax({
+                url: '/_getFullDeposits',
+                method: 'POST',
+                data: JSON.stringify({ c_code, start_date, end_date, date_filter_of }),
+                contentType: 'application/json',
+                success: function(resp) {
+                    let { full_deposits } = resp;
+                    // alert(JSON.stringify(full_deposits))
+
+                    let m_today = moment(moment().format('YYYY-MM-DD'));
+                    let rem_days = 0;
+                    
+                    arr_rem_days = [0,0,0,0,0]; //rem_days [0, 1, 2-3, 4-7, >7]
+                    let code_before = "YYMM-99999";   //Temp  
+                    full_deposits.forEach((obj, i)=>{
+                        if(obj.code!=code_before){  //New obj
+                            code_before = obj.code;
+                            if(obj.next_n>=0){
+                                let m_end_date = moment(moment(obj.end_date).format('YYYY-MM-DD'));   //Trick for Thai time format
+                                rem_days = m_end_date.diff(m_today, 'days');
+                                // alert('rem_days = '+rem_days)
+
+                                if(rem_days==0){
+                                    arr_rem_days[0]++;
+                                }else if(rem_days==1){
+                                    arr_rem_days[1]++;
+                                }else if(rem_days>=2 && rem_days<=3){
+                                    arr_rem_days[2]++;
+                                }else if(rem_days>=4 && rem_days<=7){
+                                    arr_rem_days[3]++;
+                                }else if(rem_days>7){
+                                    arr_rem_days[4]++;
+                                }
+                            }
+                        }
+                    });
+                    // alert('arr_rem_days = '+arr_rem_days.join(', '));
+                }
+            });
+            return arr_rem_days;
+        }
+        */
+
+        /*
+        let getArrCountDeposits = async (deposit_or_dep_next) => {
+            let c_code = 'All';
+            let start_date = moment().subtract(6,'days').startOf('day');
+            let end_date = moment().endOf('day');
+            let date_filter_of = "begin_date";
+            let arr_count_deposit = [];
+
+            await $.ajax({
+                url: '/_getFullDeposits',
+                method: 'POST',
+                data: JSON.stringify({ c_code, start_date, end_date, date_filter_of }),
+                contentType: 'application/json',
+                success: function(resp) {
+                    let { full_deposits } = resp;
+                    // alert(JSON.stringify(full_deposits));
+
+                    let m_today = moment(moment().format('YYYY-MM-DD'));
+                    let rem_days = 0;
+                    
+                    arr_count_deposit = [0,0,0,0,0]; //rem_days [0, 1, 2-3, 4-7, >7]
+                    let code_before = "YYMM-99999";   //Temp  
+                    full_deposits.forEach((obj, i)=>{
+                        if(obj.code!=code_before){  //New obj
+                            code_before = obj.code;
+                            let bool = deposit_or_dep_next=="deposit"? obj.code.indexOf('-N')==-1 : obj.code.indexOf('-N')>=0 ;
+                            if(bool && obj.next_n!=-1){
+                                let m_begin_date = moment(moment(obj.begin_date).format('YYYY-MM-DD'));   //Trick for Thai time format
+                                rem_days = m_today.diff(m_begin_date, 'days');
+                                // alert('rem_days = '+rem_days)
+
+                                if(rem_days==0){            //วันนี้
+                                    arr_count_deposit[4]++;
+                                }else if(rem_days==1){      //เมื่อวานนี้
+                                    arr_count_deposit[3]++;
+                                }else if(rem_days==2){      
+                                    arr_count_deposit[2]++;
+                                }else if(rem_days==3){
+                                    arr_count_deposit[1]++;
+                                }else if(rem_days==4){
+                                    arr_count_deposit[0]++;
+                                }
+                            }
+                        }
+                    });
+                    // alert('arr_count_deposit = '+arr_count_deposit.join(', '));
+                }
+            });
+            return arr_count_deposit;
+        }
+        */
+
+        /*
+        let getArrCountWithdraws = async () => {
+            let c_code = 'All';
+            let start_date = moment().subtract(6,'days').startOf('day');
+            let end_date = moment().endOf('day');
+            let arr_count_withdraw = [];
+
+            await $.ajax({
+                url: '/_getFullWithdraws',
+                method: 'POST',
+                data: JSON.stringify({ c_code, start_date, end_date }),
+                contentType: 'application/json',
+                success: function(resp) {
+                    let { full_withdraws } = resp;
+                    // alert(JSON.stringify(full_deposits));
+
+                    let m_today = moment(moment().format('YYYY-MM-DD'));
+                    let rem_days = 0;
+                    
+                    arr_count_withdraw = [0,0,0,0,0]; //rem_days [0, 1, 2-3, 4-7, >7]
+                    let code_before = "W-YYMM-99999";   //Temp  
+                    full_withdraws.forEach((obj, i)=>{
+                        if(obj.code!=code_before){  //New obj
+                            code_before = obj.code;
+                            let m_wd_date = moment(moment(obj.wd_date).format('YYYY-MM-DD'));   //Trick for Thai time format
+                            rem_days = m_today.diff(m_wd_date, 'days');
+                            // alert('rem_days = '+rem_days)
+
+                            if(rem_days==0){            //วันนี้
+                                arr_count_withdraw[4]++;
+                            }else if(rem_days==1){      //เมื่อวานนี้
+                                arr_count_withdraw[3]++;
+                            }else if(rem_days==2){      
+                                arr_count_withdraw[2]++;
+                            }else if(rem_days==3){
+                                arr_count_withdraw[1]++;
+                            }else if(rem_days==4){
+                                arr_count_withdraw[0]++;
+                            }
+                        }
+                    });
+                    // alert('arr_count_withdraw = '+arr_count_withdraw.join(', '));
+                }
+            });
+            return arr_count_withdraw;
+        }
+        */
+        
+
+        //-------------
+        //- PIE CHART -
+        //-------------
+        // Get context with jQuery - using jQuery's .get() method.
+        let initPieChart = async () => {
+            /*let arr_rem_days = await getArrDepositsRemDays();*/
+            
+            //Clear and Reset Pie Chart
+            $('canvas#pieChart').remove();
+            $('div.chartPie').append('<canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>');
+
+            var pieData = {
+                labels: [
+                    /*
+                    'ครบดิว วันนี้',        //Red
+                    'เหลือ 1 วัน',        //Orange
+                    'เหลือ 2-3 วัน',      //Yellow
+                    'เหลือ 4-7 วัน',      //Navy
+                    'เหลือมากกว่า 7 วัน',  //success Green
+                    */
+
+                    'วิชาที่ 1',           //Red
+                    'วิชาที่ 2',           //Orange
+                    'วิชาที่ 3',           //Yellow
+                    'วิชาที่ 4',           //Navy
+                    'วิชาที่ 5',           //success Green
+                ],
+                datasets: [
+                    {
+                        // data: [700, 500, 400, 600, 300, 100],
+                        // backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+                        // data: [14, 9, 16, 22, 124],
+                        /*data: arr_rem_days,*/
+                        data: [22, 9, 16, 25, 12],
+                        backgroundColor: ['red', '#F7741E', '#FFC107', '#00c0ef', '#28A745'],
+                    }
+                ]
+            };
+            var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
+            var pieOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+            };
+            //Create pie or douhnut chart
+            // You can switch between pie and douhnut using the method below.
+            var pieChart = new Chart(pieChartCanvas, {
+                type: 'pie',
+                data: pieData,
+                options: pieOptions
+            });
+        }
+        // initPieChart();
+
+        //-------------
+        //- BAR CHART -
+        //-------------
+        /*
+        let initBarChart = async () => {
+            //OLD (Slow)
+            // let arr_count_deposit = await getArrCountDeposits('deposit');
+            // let arr_count_dep_next = await getArrCountDeposits('dep_next');
+            // let arr_count_withdraw = await getArrCountWithdraws();
+
+            //NEW (Fast)
+            let arr_count_deposit = [];
+            let arr_count_dep_next = [];
+            let arr_count_withdraw = [];
+            let count_deposit = count_dep_next = count_withdraw = 0;
+            for(let i=4; i>=0; i--){
+                count_deposit = await getCountDeposits('all_new','',moment().subtract(i,'days').startOf('day'),
+                                                            moment().subtract(i,'days').endOf('day'));
+                count_dep_next = await getCountDeposits('all_next','',moment().subtract(i,'days').startOf('day'),
+                                                            moment().subtract(i,'days').endOf('day'));
+                count_withdraw = await getCountWithdraws(moment().subtract(i,'days').startOf('day'),
+                                                moment().subtract(i,'days').endOf('day'));
+
+                arr_count_deposit.push(count_deposit);
+                arr_count_dep_next.push(count_dep_next);
+                arr_count_withdraw.push(count_withdraw);
+            }
+            // alert(arr_count_deposit.join(',')+'\n'+arr_count_withdraw.join(','));
+
+
+            //Clear and Reset Bar Chart
+            $('canvas#barChart').remove();
+            $('div.chartBar').append('<canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>');
+
+            var barChartCanvas = $('#barChart').get(0).getContext('2d');
+            let m_bf2 = moment().subtract(2,'days');
+            let m_bf3 = moment().subtract(3,'days');
+            let m_bf4 = moment().subtract(4,'days');
+            let m_bf2_th_short = new Date(m_bf2).toLocaleString('th-TH',{ day:'numeric', month:'short'});
+            let m_bf3_th_short = new Date(m_bf3).toLocaleString('th-TH',{ day:'numeric', month:'short'});
+            let m_bf4_th_short = new Date(m_bf4).toLocaleString('th-TH',{ day:'numeric', month:'short'});
+            // alert(m_bf2_th_short+'\n'+m_bf3_th_short+'\n'+m_bf4_th_short);
+            var chartData = {
+                // labels: ['May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov'],
+                labels: [m_bf4_th_short, m_bf3_th_short, m_bf2_th_short, 'เมื่อวานนี้', 'วันนี้'],
+                datasets: [
+                    {
+                        label: 'บิลฝากใหม่',
+                        backgroundColor: '#28A745',
+                        borderColor: '#28A745',
+                        pointRadius: false,
+                        pointColor: '#28A745',
+                        pointStrokeColor: '#c1c7d1',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: '#c1c7d1',
+                        // data: [65, 59, 80, 81, 56, 55, 40]
+                        // data: [65, 59, 80, 81, 56]
+                        data: arr_count_deposit
+                    },
+                    {
+                        label: 'บิลฝากต่อ',
+                        backgroundColor: '#17A2B8',
+                        borderColor: '#17A2B8',
+                        pointRadius: false,
+                        pointColor: '#3b8bba',
+                        pointStrokeColor: '#17A2B8',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: '#17A2B8',
+                        // data: [15, 18, 20, 13, 26, 19, 20]
+                        // data: [15, 18, 20, 13, 26]
+                        data: arr_count_dep_next
+                    },
+                    {
+                        label: 'บิลเบิก',
+                        backgroundColor: '#DC3545',
+                        borderColor: '#DC3545',
+                        pointRadius: false,
+                        pointColor: '#3b8bba',
+                        pointStrokeColor: '#DC3545',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: '#DC3545',
+                        // data: [28, 48, 40, 33, 86, 59, 90]
+                        // data: [28, 48, 40, 33, 86]
+                        data: arr_count_withdraw
+                    }
+                ]
+            };
+            var barChartData = jQuery.extend(true, {}, chartData);
+            var temp0 = barChartData.datasets[0];
+            var temp1 = barChartData.datasets[1];
+            barChartData.datasets[0] = temp0;
+            barChartData.datasets[1] = temp1;
+
+            var barChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                datasetFill: false
+            };
+
+            var barChart = new Chart(barChartCanvas, {
+                type: 'bar',
+                data: barChartData,
+                options: barChartOptions
+            });
+        }
+        // initBarChart();
+        */
+
+        let _tableDepositRemDays = $("#_tableDepositRemDays").DataTable({
+            pageLength: 6,
+            // order: [[0, "desc"]],
+            order: [[2, 'asc']],
+            scrollX: true,
+            // scrollY: 300,
+            // scrollCollapse: true, 
+            columns: [
+                { data: "code" },
+                { data: "c_name" },
+                { data: "end_date" },
+                { data: "status_rem_days" },
+            ],
+            columnDefs: [
+                {
+                    // targets: 10,
+                    // searchable: false,
+                    // orderable: false,
+                }
+            ],
+            language: {
+                lengthMenu: 'แสดงข้อมูล : <select class="form-control form-control-sm">' +
+                    '<option value="6">6</option>' +
+                    '<option value="10">10</option>' +
+                    '<option value="20">20</option>' +
+                    '<option value="30">30</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="100">100</option>' +
+                    '<option value="-1">All</option>' +
+                    '</select> แถว/หน้า',
+                search: "ค้นหาขั้นเทพ :",
+                // info: "แสดงข้อมูล แถวที่ _START_ - _END_  จาก _TOTAL_ แถว",
+                info: "มีทั้งหมด _TOTAL_ บิล",
+                // infoEmpty: "แสดงข้อมูล แถวที่ 0 - 0  จาก 0 แถว",
+                infoEmpty: "",
+                // infoFiltered: "(ค้นหาจากข้อมูลทั้งหมด _MAX_ แถว)",
+                // zeroRecords: "ไม่มีบิลฝากสินค้าที่ครบดิวภายใน 3 วันที่จะถึงนี้",
+                zeroRecords: "ไม่พบบิลฝากสินค้า ที่ครบดิวภายใน 3 วันที่จะถึงนี้",
+                paginate: {
+                    "first": "หน้าแรก",
+                    "last": "หน้าสุดท้าย",
+                    "next": "หน้าถัดไป",
+                    "previous": "หน้าก่อน"
+                }
+            },
+            rowCallback: function (row, data, index) {
+
+                if(data.has_paid){
+                    $(row).find('td:eq(0)').css({ 'color': 'blue' });
+                }else {
+                    $(row).find('td:eq(0)').css({ 'color': 'red' });
+                }
+
+                let rem_days = data.rem_days;
+                if(rem_days==0){
+                    $(row).find('td:eq(3)').css({ 'background-color': 'red', 'color' : 'white', 'font-weight' : 'bold' });
+                }else if(rem_days==1) {
+                    $(row).find('td:eq(3)').css({ 'background-color': '#F7741E', 'color' : 'white', 'font-weight' : 'bold' });
+                }else {
+                    $(row).find('td:eq(3)').css({ 'background-color': '#FFC107' });
+                }
+            },
+            // retrieve: true
+            // responsive: true,
+            searching: false,    //default=true
+            // ordering: false      //default=true
+            // lengthChange: false, //default=true
+            // paging: false,       //default=true
+            // autoWidth: false,    //default=true
+            // info: false,         //default=true
+        });
+
+
+        let getDepositRemDaysToDataTable = () => {
+            let c_code = 'All';
+            let start_date = moment().startOf('day');
+            let end_date = moment().add(3,'days').endOf('day');
+            let date_filter_of = "end_date";
+
+            $.ajax({
+                url: '/_getFullDeposits',
+                // url: '/_getFullStocks',
+                method: 'POST',
+                data: JSON.stringify({ c_code, start_date, end_date, date_filter_of }),
+
+                contentType: 'application/json',
+                success: function (resp) {
+                    let { full_deposits } = resp;
+                    // alert(JSON.stringify(full_deposits));
+
+                    let code_before = "YYMM-99999";   //Temp 
+                    let dataTable_full_deposits = $.map(full_deposits, function (obj, i) {
+                        
+                        let c_name0 = obj.c_name.split(' ')[0];
+                        obj.c_name = c_name0;
+                        
+                        let m_end_date = moment(moment(obj.end_date).format('YYYY-MM-DD'));   //Trick for Thai time format
+                        let m_today = moment(moment().format('YYYY-MM-DD'));
+                        let rem_days = m_end_date.diff(m_today, 'days');
+                        obj.rem_days = rem_days;
+                        
+                        obj.end_date = '['+moment(obj.end_date).format('YYYY-MM-DD')+']';
+                        
+                        obj.status_rem_days = rem_days==0 ? "ครบดิววันนี้" : "เหลือ "+rem_days+" วัน";
+                        
+                        if(obj.code!=code_before && obj.next_n>=0){  //New obj
+                            code_before = obj.code;
+                            return obj;
+                        }
+                    });
+                    // alert("dataTable_full_stocks = " + JSON.stringify(dataTable_full_stocks));
+
+                    _tableDepositRemDays.clear().draw();
+                    _tableDepositRemDays.rows.add(dataTable_full_deposits).draw();
+                }
+            });
+        }
+        
+        $(async function () {
+
+            initPieChart();
+            initBarChart();
+
+            getDepositRemDaysToDataTable();
+
+
+            $('#_tableDepositRemDays').on('draw.dt', function() {
+                $('#_tableDepositRemDays_wrapper').addClass('text-sm');
+            });
+
+            //Re-Create Tooltip for DataTable
+            $('#_tableIncomeSummaryReport').on('draw.dt', function() {
+                $('i.fa-xs').tooltip('disable');
+                $('i.fa-xs').tooltip('enable');
+            });
+
+            
+
+            //--------------
+            //- AREA CHART -
+            //--------------
+
+            // Get context with jQuery - using jQuery's .get() method.
+            // var areaChartCanvas = $('#areaChart').get(0).getContext('2d');
+
+            // var areaChartData = {
+            //     // labels: ['May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov'],
+            //     labels: ['July20', 'Aug20', 'Sept20', 'Oct20', 'Nov20', 'Dec20', 'Jan21'],
+            //     datasets: [
+            //         {
+            //             label: 'จำนวนบิลฝาก',
+            //             backgroundColor: '#28A745',
+            //             borderColor: '#28A745',
+            //             pointRadius: false,
+            //             pointColor: '#28A745',
+            //             pointStrokeColor: '#c1c7d1',
+            //             pointHighlightFill: '#fff',
+            //             pointHighlightStroke: '#c1c7d1',
+            //             data: [65, 59, 80, 81, 56, 55, 40]
+            //         },
+            //         {
+            //             label: 'จำนวนบิลเบิก',
+            //             backgroundColor: '#DC3545',
+            //             borderColor: '#DC3545',
+            //             pointRadius: false,
+            //             pointColor: '#3b8bba',
+            //             pointStrokeColor: '#DC3545',
+            //             pointHighlightFill: '#fff',
+            //             pointHighlightStroke: '#DC3545',
+            //             data: [28, 48, 40, 33, 86, 59, 90]
+            //         },
+            //         // {
+            //         //     label: 'Digital Goods',
+            //         //     backgroundColor: 'rgba(60,141,188,0.9)',
+            //         //     borderColor: 'rgba(60,141,188,0.8)',
+            //         //     pointRadius: false,
+            //         //     pointColor: '#3b8bba',
+            //         //     pointStrokeColor: 'rgba(60,141,188,1)',
+            //         //     pointHighlightFill: '#fff',
+            //         //     pointHighlightStroke: 'rgba(60,141,188,1)',
+            //         //     data: [28, 48, 40, 19, 86, 27, 90]
+            //         // },
+            //         // {
+            //         //     label: 'Electronics',
+            //         //     backgroundColor: 'rgba(210, 214, 222, 1)',
+            //         //     borderColor: 'rgba(210, 214, 222, 1)',
+            //         //     pointRadius: false,
+            //         //     pointColor: 'rgba(210, 214, 222, 1)',
+            //         //     pointStrokeColor: '#c1c7d1',
+            //         //     pointHighlightFill: '#fff',
+            //         //     pointHighlightStroke: 'rgba(220,220,220,1)',
+            //         //     data: [65, 59, 80, 81, 56, 55, 40]
+            //         // },
+            //     ]
+            // };
+
+            // var areaChartOptions = {
+            //     maintainAspectRatio: false,
+            //     responsive: true,
+            //     legend: {
+            //         display: false
+            //     },
+            //     scales: {
+            //         xAxes: [{
+            //             gridLines: {
+            //                 display: false,
+            //             }
+            //         }],
+            //         yAxes: [{
+            //             gridLines: {
+            //                 display: false,
+            //             }
+            //         }]
+            //     }
+            // };
+
+            // // This will get the first returned node in the jQuery collection.
+            // var areaChart = new Chart(areaChartCanvas, {
+            //     type: 'line',
+            //     data: areaChartData,
+            //     options: areaChartOptions
+            // });
+
+
+
+            function cb(start, end) {
+                $('#_drp_beginDate span').html(start.format('YYYY-MM-DD') + ' &nbsp; ถึง &nbsp; ' + end.format('YYYY-MM-DD'));
+                _start1 = start.format('YYYY-MM-DD HH:mm');
+                _end1 = end.format('YYYY-MM-DD HH:mm');
+                // alert('_start/_end = "'+_start1+'"/"'+_end1+'"');
+
+                _DT_deposits_cache = [];    //Clear cache when choose DateRangePicker
+                getDepositCostToDataTable();
+            }
+
+            $('#_drp_beginDate').daterangepicker({
+                startDate: _start1,
+                endDate: _end1,
+                alwaysShowCalendars:true,
+                opens: 'center',
+                ranges: {
+                    'วันนี้': [moment(), moment()],
+                    'เมื่อวานนี้': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    // 'เดือนนี้': [moment().startOf('month'), moment().endOf('month')],
+                    // 'เดือนที่แล้ว': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                    'มกราคม': [moment().set('month',0).startOf('month'), moment().set('month',0).endOf('month')],
+                    'กุมภาพันธ์': [moment().set('month',1).startOf('month'), moment().set('month',1).endOf('month')],
+                    'มีนาคม': [moment().set('month',2).startOf('month'), moment().set('month',2).endOf('month')],
+                    'เมษายน': [moment().set('month',3).startOf('month'), moment().set('month',3).endOf('month')],
+                    'พฤษภาคม': [moment().set('month',4).startOf('month'), moment().set('month',4).endOf('month')],
+                    'มิถุนายน': [moment().set('month',5).startOf('month'), moment().set('month',5).endOf('month')],
+                    'กรกฎาคม': [moment().set('month',6).startOf('month'), moment().set('month',6).endOf('month')],
+                    'สิงหาคม': [moment().set('month',7).startOf('month'), moment().set('month',7).endOf('month')],
+                    'กันยายน': [moment().set('month',8).startOf('month'), moment().set('month',8).endOf('month')],
+                    'ตุลาคม': [moment().set('month',9).startOf('month'), moment().set('month',9).endOf('month')],
+                    'พฤศจิกายน': [moment().set('month',10).startOf('month'), moment().set('month',10).endOf('month')],
+                    'ธันวาคม': [moment().set('month',11).startOf('month'), moment().set('month',11).endOf('month')]
+                },
+                locale: {
+                    format: "YYYY-MM-DD",
+                    separator: "  ถึง  ",
+                    applyLabel: "OK",
+                    cancelLabel: "Cancel",
+                    fromLabel: "จาก",
+                    toLabel: "ถึง",
+                    customRangeLabel: "เลือกเอง",
+                    weekLabel: "W",
+                    daysOfWeek: [
+                        "อา",
+                        "จ",
+                        "อ",
+                        "พ",
+                        "พฤ",
+                        "ศ",
+                        "ส"
+                    ],
+                    monthNames: [
+                        "มกราคม",
+                        "กุมภาพันธ์",
+                        "มีนาคม",
+                        "เมษายน",
+                        "พฤษภาคม",
+                        "มิถุนายน",
+                        "กรกฎาคม",
+                        "สิงหาคม",
+                        "กันยายน",
+                        "ตุลาคม",
+                        "พฤศจิกายน",
+                        "ธันวาคม"
+                    ],
+                    firstDay: 0
+                }
+            }, cb);
+
+            cb(_start1, _end1);
+
+
+
+            //Solved DataTable Header auto-width failed
+            $('#_hamburger').click(function () {
+                // alert("click hamburger");
+                setTimeout(function () {
+                    _tableDepositRemDays.columns.adjust().draw();
+                    _tableIncomeSummaryReport.columns.adjust().draw();
+                }, 300);
+            });
+
+        });
+
+    </script>
+</body>
+
+</html>

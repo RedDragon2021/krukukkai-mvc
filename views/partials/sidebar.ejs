@@ -1,0 +1,262 @@
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary">
+    <!-- Brand Logo -->
+
+    <div>
+        <a href="/" class="brand-link text-center d-block">
+            <img src="/img/etraining-logo-fit.png" class="img-circle" style="opacity: .8;width: 115px;height: 115px;">
+        </a>
+    </div>
+
+
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-2 pb-2 mb-2 d-flex">
+            <div class="image">
+                <img src="/img/etraining-logo-fit.png" class="img-circle">
+            </div>
+            <div class="info">
+                <a href="/" class="d-block">e-Learning of Krukukkai</a>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+                <li class="nav-item has-treeview">
+                    <a href="/" class="nav-link" id="_menu0" name="menu_home">
+                        <!-- addClass('active') to active -->
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>
+                            <!-- เมนูหลัก (ใช้งานบ่อย)
+                            <i class="right fas fa-angle-left"></i> -->
+                            <!-- <i class="fas fa-chart-pie nav-icon"></i> -->
+                            หน้าแรก (แดชบอร์ด)
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item has-treeview">
+                    <a href="/all_courses" class="nav-link" id="_menu1" name="menu_allCourses">
+                        <i class="fas fa-th nav-icon text-info"></i>
+                        <p>
+                            รายวิชาทั้งหมดของ อ.ไก่
+                        </p>
+                    </a>
+                </li>
+
+                <!-- USE EJS IF for check role value -->
+                <li class="nav-item has-treeview">
+                    <!-- for Student -->
+                    <a href="/my_enrolled_courses" class="nav-link" id="_menu2" name="menu_myEnrolledCourses">
+                        <i class="fas fa-sitemap nav-icon text-primary"></i>
+                        <p>
+                            รายวิชาที่ลงทะเบียนเรียน
+                        </p>
+                    </a>
+                    <!-- for Teacher -->
+                    <!--
+                    <a href="/enrolled_courses" class="nav-link" id="_menu2" name="menu_enrolledCourses">
+                        <i class="fas fa-sitemap nav-icon text-primary"></i>
+                        <p>
+                            ข้อมูลการลงทะเบียนเรียน
+                        </p>
+                    </a>
+                    -->
+                </li>
+
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link" id="_menu3" name="menu_editProfile">
+                        <i class="nav-icon fas fa-address-card text-warning"></i>
+                        <p>
+                            ข้อมูลส่วนตัว
+                            <!-- <i class="fas fa-angle-left right"></i> -->
+                        </p>
+                    </a>
+                    <!--
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" id="_menu2-1" name="menu_editProfile">
+                                <!- Call Modal "editProfile" ->
+                                <p>แก้ไขข้อมูลส่วนตัว</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" id="_menu2-2" name="menu_changePw">
+                                <!- Call Modal "changePassword" ->
+                                <i class="fas fa-key nav-icon text-danger"></i>
+                                <p>เปลี่ยนรหัสผ่าน</p>
+                            </a>
+                        </li>
+                    </ul>
+                    -->
+                </li>
+
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link" id="_menu4" name="menu_changePw">
+                        <i class="fas fa-key nav-icon text-danger"></i>
+                        <p>
+                            เปลี่ยนรหัสผ่าน
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item has-treeview">
+                    <a href="/history_logs" class="nav-link" id="_menu5" name="menu_historyLogs">
+                        <i class="fas fa-history nav-icon"></i>
+                        <p>
+                            ประวัติการใช้งานระบบ
+                        </p>
+                    </a>
+                </li>
+
+                <!-- <li class="nav-item has-treeview">
+                    <ul class="nav nav-treeview pl-0">
+                        <li class="nav-item">
+                            <a href="/history_logs" class="nav-link" id="_menu3-0" name="menu_historyLogs">
+                                <i class="fas fa-history nav-icon"></i>
+                                <p>ประวัติการใช้งานระบบ</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li> -->
+
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel mt-2 pb-2 mb-2 d-flex pl-4">
+                    <div class="info">
+                        <a id="_btnLogout" class="btn btn-outline-secondary">
+                            <i class="fas fa-sign-out-alt mr-2"></i> ออกจากระบบ
+                        </a>
+                    </div>
+                </div>
+
+                <div class="pb-5"></div>
+                <div class="pb-5"></div>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
+
+<!-- Modal "Edit Profile (User)" -->
+<div id="_modal_editProfile" class="modal fade" tabindex="-1" role="dialog">
+    <form id="_form_editProfile" class="form-horizontal" action="" method="POST">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title btn-warning btn-lg" style="width:100%; pointer-events:none;">
+                        <b>แก้ไขข้อมูลส่วนตัว</b>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="far fa-window-close"></i>
+                    </button>
+                </div>
+                <!-- /.modal-header -->
+
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="_userCode" class="col-sm-3 col-form-label">รหัสผู้ใช้ : </label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="_userCode" name="userCode" value="" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="_username" class="col-sm-3 col-form-label">Username : </label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control is-warning" id="_username" name="username" placeholder="Username" value="" oninvalid="this.setCustomValidity('กรุณากรอก Username')" oninput="setCustomValidity('')" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="_profileName" class="col-sm-3 col-form-label">ชื่อโปรไฟล์ : </label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control is-warning" id="_profileName" name="profile_name" placeholder="ชื่อโปรไฟล์" value="" oninvalid="this.setCustomValidity('กรุณากรอก ชื่อโปรไฟล์')" oninput="setCustomValidity('')" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="_userEmail" class="col-sm-3 col-form-label">Email : </label>
+                        <div class="col-sm-9">
+                            <input type="email" class="form-control" id="_userEmail" name="email" placeholder="เช่น yourname@gmail.com">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="_userMobile" class="col-sm-3 col-form-label">มือถือ : </label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control is-warning" id="_userMobile" name="mobile" placeholder="เบอร์มือถือ" value="" oninvalid="this.setCustomValidity('กรุณากรอก เบอร์มือถือ')" oninput="setCustomValidity('')" data-inputmask='"mask": "099-9999999"' data-mask
+                                required>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-body -->
+
+                <div class="modal-footer">
+                    <div class="mr-auto">
+                        <input type="password" class="form-control is-warning" id="_userPwConfirm" name="password" placeholder="กรอก Password เพื่อยืนยัน" oninvalid="this.setCustomValidity('กรุณากรอก Password เพื่อยืนยันการแก้ไขข้อมูล')" oninput="setCustomValidity('')" required>
+                        <input type="password" id="_userPw" style="display: none;">
+                    </div>
+                    <button type="submit" class="btn btn-warning">Save</button>
+                    <button type="button" id="_btnReset_editProfile" class="btn btn-secondary">Reset</button>
+                </div>
+                <!-- /.modal-footer -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </form>
+</div>
+<!-- End Modal "Edit People"-->
+
+<!-- Modal "Change Password (User)" -->
+<div id="_modal_changePw" class="modal fade" tabindex="-1" role="dialog">
+    <form id="_form_changePw" class="form-horizontal" action="" method="POST">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title btn-danger btn-lg" style="width:100%; pointer-events:none;">
+                        <i class="fas fa-key mr-2"></i>
+                        <b>เปลี่ยนรหัสผ่าน</b>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="far fa-window-close"></i>
+                    </button>
+                </div>
+                <!-- /.modal-header -->
+
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="_oldPw" class="col-sm-4 col-form-label">รหัสผ่านเดิม: </label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control is-warning" id="_oldPw" name="old_pw" placeholder="รหัสผ่านเดิม" value="" oninvalid="this.setCustomValidity('กรุณากรอก รหัสผ่านเดิม')" oninput="setCustomValidity('')" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="_newPw" class="col-sm-4 col-form-label">ตั้งรหัสผ่านใหม่ : </label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control is-warning" id="_newPw" name="new_pw" placeholder="รหัสผ่านใหม่" value="" oninvalid="this.setCustomValidity('กรุณากรอก รหัสผ่านใหม่')" oninput="setCustomValidity('')" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="_newPwConfirm" class="col-sm-4 col-form-label">ยืนยัน รหัสผ่านใหม่ : </label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control is-warning" id="_newPwConfirm" name="new_pw_confirm" placeholder="ยืนยันรหัสผ่านใหม่" value="" oninvalid="this.setCustomValidity('กรุณากรอก ยืนยันรหัสผ่านใหม่')" oninput="setCustomValidity('')" required>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-body -->
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Save</button>
+                    <button type="reset" class="btn btn-secondary">Reset</button>
+                </div>
+                <!-- /.modal-footer -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </form>
+</div>
+<!-- End Modal "Change Password (User)"-->

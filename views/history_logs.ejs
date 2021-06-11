@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/header.ejs') %>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+
+        <%- include('partials/navbar.ejs') %>
+        <%- include('partials/sidebar.ejs') %>
+
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h4 class="m-0 text-dark"><%= header_name %></h4>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                <li class="breadcrumb-item active">ประวัติการใช้งานระบบ</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+
+                            <div class="alert alert-primary text-center" role="alert" id="_alertFound" style="display:none"></div>
+                            <div class="alert alert-warning text-center" role="alert" id="_alertNotFound" style="display:none"></div>
+
+                            <div class="card">
+                                <div class="card-header" style="background-color: #d3cbc6;">
+                                    <!-- <h5 class="mt-2">ตารางแสดงข้อมูล ประวัติการใช้งานระบบของผู้ใช้ทั้งหมด</h5> -->
+                                    <div class="row">
+                                        <label for="_drp_beginDate" class="pt-1 col-form-label d-none d-inline-block">คัดกรองประวัติจาก วันที่ทำรายการ:
+                                        </label>
+                                        <div id="_drp_beginDate" class=" text-sm form-control form-control-sm font-weight-bold mx-2" 
+                                            style="font-size: 105%; background: #fff; cursor: pointer; padding: 5px 10px; width: 240px;">
+                                            <i class="far fa-calendar-alt"></i> &nbsp; 
+                                            <span></span> &nbsp; <i class="fa fa-caret-down"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <table id="_tableHistoryLogs"
+                                        class="table text-sm table-bordered table-striped table-hover display nowrap"
+                                        width="100%">
+                                        <thead class="text-center text-light" style="background-color: #4C3222;">
+                                            <tr>
+                                                <th>H-Code</th>
+                                                <th>วันและเวลา</th>
+                                                <th>รหัสผู้ใช้</th>
+                                                <th>รายการที่ใช้งาน</th>
+                                                <th>รายละเอียดเพิ่มเติม</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+
+                        </div>
+                        <!-- /.col-12 -->
+                    </div>
+                    <!-- /.row -->
+
+                </div>
+                <!-- .container-fluid -->
+            </section>
+            <!-- .content -->
+        </div>
+        <!-- .content-wrapper -->
+
+        <%- include('partials/footer.ejs') %>
+
+    </div>
+    <!-- .wrapper -->
+
+    <%- include('partials/script_src.ejs') %>
+    <%- include('partials/script_extend.ejs') %>
+
+    <script>
+        //Set actived menu "ประวัติการใช้งานระบบ"
+        $("#_menu3-0").addClass("active");
+
+
+        $(function () {
+
+            let data_full_history_logs = {};
+            let _tableHistoryLogs = $("#_tableHistoryLogs").DataTable({
+                pageLength: 10,
+                order: [[0, "desc"]],
+                scrollX: true,
+                // scrollY: 300,
+                // scrollCollapse: true, 
+                columns: [
+                    { data: "code" },
+                    { data: "date_str" },
+                    { data: "u_code" },
+                    { data: "todo" },
+                    { data: "todo_detail" },
+                ],
+                columnDefs: [
+                    {
+                        // targets: 1,
+                        // searchable: false,
+                        // orderable: false,
+                    }
+                ],
+                language: {
+                    lengthMenu: 'แสดงข้อมูล : <select class="form-control">' +
+                        '<option value="5">5</option>' +
+                        '<option value="10">10</option>' +
+                        '<option value="20">20</option>' +
+                        '<option value="30">30</option>' +
+                        '<option value="50">50</option>' +
+                        '<option value="100">100</option>' +
+                        '<option value="-1">All</option>' +
+                        '</select> แถว/หน้า',
+                    search: "ค้นหาขั้นเทพ :",
+                    info: "แสดงข้อมูล แถวที่ _START_ - _END_  จาก _TOTAL_ แถว",
+                    infoEmpty: "แสดงข้อมูล แถวที่ 0 - 0  จาก 0 แถว",
+                    infoFiltered: "(ค้นหาจากข้อมูลทั้งหมด _MAX_ แถว)",
+                    zeroRecords: "ไม่พบข้อมูลที่กำลังค้นหา",
+                    paginate: {
+                        "first": "หน้าแรก",
+                        "last": "หน้าสุดท้าย",
+                        "next": "หน้าถัดไป",
+                        "previous": "หน้าก่อน"
+                    }
+                },
+                rowCallback: function(row, data, index){
+                    $(row).find('td:eq(2)').css({'text-align':'center', 'font-weight':'bold'});
+                    // $(row).find('td:eq(3)').css({'font-weight':'bold'});
+                }
+                // retrieve: true
+                // responsive: true,
+                // searching: false,    //default=true
+                // ordering: false      //default=true
+                // lengthChange: false, //default=true
+                // paging: false,       //default=true
+                // autoWidth: false,    //default=true
+                // info: false,         //default=true
+            });
+
+            let getFullHistoryLogsToDataTable = () => {
+                let start_date = new Date(_start);
+                let end_date = new Date(_end);
+                // alert(start_date+" and "+end_date);
+
+                $.ajax({
+                    url: '/_getFullHistoryLogs',
+                    method: 'POST',
+                    data: JSON.stringify({ start_date, end_date }),
+                    contentType: 'application/json',
+                    success: function (resp) {
+                        let { full_history_logs } = resp;
+                        // alert("getFullHistoryLogs history_logs = "+JSON.stringify(full_history_logs));
+                        data_full_history_logs = full_history_logs;
+
+                        let dataTable_full_history_logs = $.map(full_history_logs, function (obj, i) {
+                            let YYYY_en = (obj.date_str).substr(0,4);
+                            // let YYYY_th = parseInt(YYYY_en)+543;
+                            // obj.date_str = YYYY_th+ (obj.date_str).substr(4);
+                            obj.date_str = YYYY_en+ "-<b>"+(obj.date_str).substr(5,5)+"</b> "+(obj.date_str).substr(-5);
+                            obj.todo = obj.todo.replace('คุณ','คุณ<b>').replace('ได้','</b>ได้');
+                            return obj;
+                        });
+                        // alert('dataTable_full_history_logs = ' + JSON.stringify(dataTable_full_history_logs));
+
+                        _tableHistoryLogs.clear().draw();
+                        _tableHistoryLogs.rows.add(dataTable_full_history_logs).draw();
+                    }
+                });
+            }
+            // getFullHistoryLogsToDataTable();
+
+
+            // let _start = moment().startOf('month');
+            let _start = moment();
+            let _end = moment();
+
+            function cb(start, end) {
+                $('#_drp_beginDate span').html(start.format('YYYY-MM-DD') + ' &nbsp; ถึง &nbsp; ' + end.format('YYYY-MM-DD'));
+                _start = start.startOf('day').format('YYYY-MM-DD HH:mm');   //Not need to use .startOf('day')
+                _end = end.endOf('day').format('YYYY-MM-DD HH:mm');         //Not need to use .endOf('day')
+                // alert('_start/_end = "'+_start+'"/"'+_end+'"');
+
+                getFullHistoryLogsToDataTable();
+            }
+
+            $('#_drp_beginDate').daterangepicker({
+                // startDate: moment().startOf('month'),
+                startDate: moment(),
+                endDate: moment(),
+                // minDate: moment().startOf('year'),
+                // maxDate: moment(),
+                maxDate: moment().add(15,'days'),
+                alwaysShowCalendars:true,
+                opens: 'center',
+                ranges: {
+                    'วันนี้': [moment(), moment()],
+                    'เมื่อวานนี้': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    '7 วันที่ผ่านมา': [moment().subtract(6, 'days'), moment()],
+                    '15 วันที่ผ่านมา': [moment().subtract(14, 'days'), moment()],
+                    'เดือนนี้': [moment().startOf('month'), moment().endOf('month')],
+                    'เดือนที่แล้ว': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                    'ปีนี้': [moment().startOf('year'), moment().endOf('year')]
+                },
+                locale: {
+                    format: "YYYY-MM-DD",
+                    separator: "  ถึง  ",
+                    applyLabel: "OK",
+                    cancelLabel: "Cancel",
+                    fromLabel: "จาก",
+                    toLabel: "ถึง",
+                    customRangeLabel: "เลือกเอง",
+                    weekLabel: "W",
+                    daysOfWeek: [
+                        "อา",
+                        "จ",
+                        "อ",
+                        "พ",
+                        "พฤ",
+                        "ศ",
+                        "ส"
+                    ],
+                    monthNames: [
+                        "มกราคม",
+                        "กุมภาพันธ์",
+                        "มีนาคม",
+                        "เมษายน",
+                        "พฤษภาคม",
+                        "มิถุนายน",
+                        "กรกฎาคม",
+                        "สิงหาคม",
+                        "กันยายน",
+                        "ตุลาคม",
+                        "พฤศจิกายน",
+                        "ธันวาคม"
+                    ],
+                    firstDay: 0
+                }
+            }, cb);
+
+            cb(_start, _end);
+
+
+            //Solved DataTable Header auto-width failed
+            $('#_hamburger').click(function(){
+                // alert("click hamburger");
+                setTimeout(function(){
+                    _tableHistoryLogs.columns.adjust().draw();
+                }, 300);
+            });
+
+        });
+    </script>
+</body>
+
+</html>

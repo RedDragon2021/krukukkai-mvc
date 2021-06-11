@@ -1,0 +1,527 @@
+<script>
+
+    let socket = io();
+
+    // let emit_userTodo = (todo, time)=>{
+    //     socket.emit('__user_todo__', { todo, time });
+    let emit_userTodo = (todo)=>{
+        socket.emit('__user_todo__', { todo });
+    }
+
+    let getLastHL = async () => {   //Not use now
+        let last_history_log = {};
+        await $.ajax({
+            url: '/_getLastHistoryLog',
+            method: 'POST',
+            contentType: 'application/json',
+            success: function (resp) {
+                let { history_log } = resp;
+                last_history_log = history_log;
+            }
+        });
+        return last_history_log;
+    }
+
+    let getThisUser = async () => {
+        let this_user = {};
+        await $.ajax({
+            url: '/_getThisUser',
+            method: 'POST',
+            contentType: 'application/json',
+            success: function (resp) {
+                let { user } = resp;
+                this_user = user;
+            }
+        });
+        return this_user;
+    }
+
+    let getSetUnread = async (u_unread) => {
+        let _unread = 0;
+        await $.ajax({
+            url: '/_getSetUnread',
+            method: 'POST',
+            data: JSON.stringify({u_unread}),
+            contentType: 'application/json',
+            success: function (resp) {
+                let { unread } = resp;
+                _unread = unread;
+                // alert("_unread = "+_unread);
+            }
+        });
+        return _unread;
+    }
+
+    let formatDate_YYYY_MM_DD = (date) => {
+        //== Old Trick ==
+        // let YYYY = date.getFullYear();
+        // let M = date.getMonth()+1;
+        // let MM = "00".substr((""+M).length)+M;
+        // let D = date.getDate();
+        // let DD = "00".substr((""+D).length)+D;
+        // let date_str = YYYY+"-"+MM+"-"+DD;
+
+        //== New Trick ==
+        let date_zone = new Date(date.getTime() - date.getTimezoneOffset()*60*1000);
+        let date_zone_str = date_zone.toISOString();    //"2021-01-03T15:23:35.991Z"
+        let date_str = date_zone_str.split('T')[0];     //"2021-01-03"
+
+        return date_str;
+    }
+
+    let formatDate_YYYY_MM_DD__HH_mm = (date) => {
+        //== Old Trick ==
+        // let YYYY_MM_DD = formatDate_YYYY_MM_DD(date);
+        // let H = date.getHours();
+        // let HH = "00".substr((""+H).length)+H;
+        // let m = date.getMinutes();
+        // let mm = "00".substr((""+m).length)+m;
+        // let date_time_str = YYYY_MM_DD+" "+HH+":"+mm;
+
+        //== New Trick ==
+        let date_zone = new Date(date.getTime() - date.getTimezoneOffset()*60*1000);
+        let date_zone_str = date_zone.toISOString();                        //"2021-01-03T15:23:35.991Z"
+        let date_time_str = date_zone_str.replace('T',' ').substr(0,16);    //"2021-01-03 15:23"
+
+        return date_time_str;
+    }
+
+    function matchCustomByKakaMik(params, data) {
+        // If there are no search terms, return all of the data
+        if ($.trim(params.term) === '') {
+            return data;
+        }
+
+        // Do not display the item if there is no 'text' property
+        if (typeof data.text === 'undefined') {
+            return null;
+        }
+
+        // `params.term` should be the term that is used for searching
+        // `data.text` is the text that is displayed for the data object
+        // if (data.text.indexOf(params.term) > -1) {
+        //     var modifiedData = $.extend({}, data, true);
+        //     // modifiedData.text += ' (matched)';
+
+        //     return modifiedData;
+        // }
+
+
+        //KakaMik Select2 with Modify Matcher
+        let str = $.trim(params.term);
+        let ar_search = str.split(" ");
+
+        let count = 0;
+        let index = 0;
+        let text_lowerCase = data.text.toLowerCase();
+        for (let i = 0; i < ar_search.length; i++) {
+            let search_lowerCase = ar_search[i].toLowerCase();
+            index = text_lowerCase.indexOf(search_lowerCase);
+            if (index > -1) {
+                count++;
+            }
+
+            //For Search by text sequent
+            // index = data.text.indexOf(ar_search[i], index);    
+            // if ( index > -1) {
+            //     count++;
+            //     index++;
+            // }
+        }
+        if (count == ar_search.length) {
+            var modifiedData = $.extend({}, data, true);
+            // modifiedData.text += ' (matched)';
+
+            return modifiedData;
+        }
+
+        // Return `null` if the term should not be displayed
+        return null;
+    }
+
+    function formatStateByKakaMik (state) {
+        if (!state.id) {
+            return state.text;
+        }
+
+        var $state = $('<span class="text-sm">' + state.text + '</span>');
+        return $state;
+    };
+
+    let moneyFormat = (cost) => {
+        return (cost).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    }
+
+    $(function () {
+        //For use inputmask
+        $('[data-mask]').inputmask();
+        $('[data-toggle="tooltip"]').tooltip({
+            container: 'body'
+        });
+
+        //Click menu "Log out"
+        $('#_btnLogout').click(() => {
+            let ans = confirm("คุณต้องการออกจากระบบ ?");
+            if (ans) {
+
+                $.ajax({
+                    url: '/logout',
+                    method: 'GET',
+                    contentType: 'application/json',
+                    success: function(resp){
+                        // let { isLogout, todo, time } = resp;
+                        let { isLogout, todo } = resp;
+                        // alert("btnLogout resp = "+JSON.stringify(resp));
+
+                        if(isLogout){
+                        //  emit_userTodo(todo, time);
+                        //  emit_userTodo(todo);
+                            if(todo!="VVIP"){
+                                emit_userTodo(todo);
+                            }
+                            location.href = "/";
+                        }
+                    }
+                });
+            }
+        });
+
+        //Click menu "Edit Profile"
+        // $('a[name="menu_editProfile"],a[name="navbar_editProfile"]').click(async () => {
+        $('a[name="menu_editProfile"],a#_navbar_editProfile').click(async () => {
+            $('#_form_editProfile').get(0).reset();
+            $('#_username,#_profileName,#_userMobile,#_userPwConfirm').each(function () {
+                $(this).attr('class', "form-control is-warning");
+            });
+
+            let user = await getThisUser();
+            $('#_userCode').val(user.code);
+            $('#_username').val(user.username);
+            $('#_profileName').val(user.profile_name);
+            $('#_userEmail').val(user.email);
+            $('#_userMobile').val(user.mobile);
+            $('#_userPw').val(user.password);
+            
+            $('#_modal_editProfile').modal('show');
+        });
+
+        //Submit "EditProfile Form"
+        $('#_form_editProfile').on('submit', function (e) {
+            e.preventDefault();
+
+            if (!$('#_userMobile').inputmask('isComplete')) {
+                alert("กรุณากรอก เบอร์มือถือให้ครบถ้วน");
+                return;
+            }
+
+            let u_code = $('#_userCode').val();
+            let username = $('#_username').val();
+            let profile_name = $('#_profileName').val();
+            let email = $('#_userEmail').val();
+            let mobile = $('#_userMobile').val();
+            let pw = $('#_userPwConfirm').val();
+
+            // alert("New Data of " + u_code + " = (" + username + "," + profile_name + "," + email + "," + mobile + ")");
+
+            if (pw != $('#_userPw').val()) {
+                alert("คุณกรอก Password ยืนยัน ไม่ถูกต้อง !!");
+                return;
+            }
+
+            $.ajax({
+                url: '/editUser/' + u_code,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ username, profile_name, email, mobile }),
+                success: function (resp) {
+                    // alert("submit resp = " + JSON.stringify(resp));
+                    // let { isEdited, user, todo, time } = resp;
+                    let { isEdited, user, todo } = resp;
+
+                    // alert("isEdited = " + isEdited + " , user = " + JSON.stringify(user));
+                    // $('a[name="navbar_editProfile"] span').html(user.profile_name);
+
+                    let pf_name = user.profile_name.split(' ');
+                    $('#_pfName0').html(pf_name[0]);
+                    $('#_pfName1').html(user.profile_name.substr(pf_name[0].length));
+
+                    if (isEdited == true) {
+                        alert('ทำการแก้ไขข้อมูลส่วนตัวเรียบร้อย');
+                    } else {
+                        alert('แก้ไขข้อมูลส่วนตัว ไม่สำเร็จ !!');
+                    }
+
+                    $('#_modal_editProfile').modal('hide');
+
+                    // emit_userTodo(todo, time);
+                    emit_userTodo(todo);
+                }
+            });
+        });
+
+        $('#_btnReset_editProfile').click(function () {
+            let u_code = $('#_userCode').val();
+            // alert("u_code = " + u_code);
+            $('#_form_editProfile')[0].reset();
+
+            $('#_userCode').val(u_code);
+            $('#_username,#_profileName,#_userMobile,#_userPwConfirm').each(function () {
+                $(this).attr('class', "form-control is-invalid");
+            });
+        });
+
+        $('#_form_changePw').on('reset', function () {
+            $('#_oldPw,#_newPw,#_newPwConfirm').each(function () {
+                $(this).attr('class', "form-control is-invalid");
+            });
+        });
+
+        //Click menu "Change Password""
+        $('a[name="menu_changePw"]').click(() => {
+            $('#_form_changePw').get(0).reset();
+
+            $('#_modal_changePw').modal('show');
+        });
+
+        //Submit "ChangePassword Form"
+        $('#_form_changePw').on('submit', function (e) {
+            e.preventDefault();
+
+            let old_pw = $('#_oldPw').val();
+            let new_pw = $('#_newPw').val();
+            let new_pw_confirm = $('#_newPwConfirm').val();
+
+            // alert("New Password = (" + old_pw + "," + new_pw + "," + new_pw_confirm + ")");
+
+            if (new_pw != new_pw_confirm) {
+                alert("กรอกรหัสผ่านใหม่ ไม่ตรงกัน");
+                return;
+            }
+
+            $.ajax({
+                url: '/changePw',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ old_pw, new_pw }),
+                success: function (resp) {
+                    // alert("submit resp = " + JSON.stringify(resp));
+                    // let { isChanged, todo, time } = resp;
+                    let { isChanged, todo } = resp;
+
+                    // alert("isChanged = " + isChanged);
+
+                    if (isChanged == true) {
+                        alert('ทำการเปลี่ยนรหัสผ่านเรียบร้อย');
+                    } else {
+                        alert('เปลี่ยนรหัสผ่าน ไม่สำเร็จ (กรอกรหัสผ่านเดิมไม่ถูกต้อง) !!');
+                    }
+
+                    $('#_modal_changePw').modal('hide');
+
+                    // emit_userTodo(todo, time);
+                    emit_userTodo(todo);
+                }
+            });
+        });
+
+        //MouseOver for Show Password
+        $('#_oldPw,#_newPw,#_newPwConfirm,#_confirmPw')
+            .mouseover(function () {
+                $(this).attr('type', 'text');
+            })
+            .mouseout(function () {
+                $(this).attr('type', 'password');
+            });
+
+
+
+        //Optional Validation Input Form
+        $('#_username,#_profileName,#_userMobile,#_userPwConfirm,#_oldPw,#_newPw,#_newPwConfirm').on('input', function () {
+            if ($(this).val()) {
+                $(this).attr('class', "form-control is-valid");
+                let name = $(this).attr('name');
+                if (name == 'mobile') {
+                    if (!$(this).inputmask('isComplete')) {
+                        $(this).attr('class', "form-control is-invalid");
+                    }
+                }
+            } else {
+                $(this).attr('class', "form-control is-invalid");
+            }
+        });
+
+
+        //Convert To Notify Message
+        let convertToNotifyMsg = (todo, time) => {
+            let text_color = "text-";
+            let fa_name = "";
+            if (todo.includes("Log")) {
+                text_color = "";
+                fa_name = todo.includes("Log in") ? "sign-in-alt" : "sign-out-alt";
+            } else if(todo.includes("เปลี่ยนรหัส")){
+                text_color += "danger";
+                fa_name = "key";
+            } else if (todo.includes("เพิ่ม")) {
+                text_color += "primary";
+                fa_name = todo.includes("ลูกค้า") ? "user-plus" : todo.includes("ประเภท") ? "th" : "apple-alt";
+            } else if (todo.includes("แก้ไข")) {
+                text_color += "warning";
+                fa_name = (todo.includes("ลูกค้า") || todo.includes("ส่วนตัว")) ? "user-edit" :
+                    todo.includes("ประเภท") ? "th" : 
+                    todo.includes("บิลฝาก") ? "cart-plus" :
+                    todo.includes('บิลเบิก') ? "dolly-flatbed" : "apple-alt";
+            } else if (todo.includes("ฝากสินค้า")) {
+                let color = todo.includes("(ใหม่)") ? "success" : "info";
+                text_color += color;
+                fa_name = "cart-plus"
+            } else if (todo.includes("เบิกสินค้า")) {
+                text_color += "danger";
+                fa_name = "dolly-flatbed";
+            } else if (todo.includes("เปิดบิลฝากใหม่")) {
+                text_color += "primary";
+                // fa_name = "cart-plus";
+                fa_name = "file-alt";
+            } else if (todo.includes("เปลี่ยนผู้ฝาก")) {
+                text_color += "warning";
+                fa_name = "file-alt";
+            }
+
+            // alert(todo.includes("Log") + "\n " + todo + " \nfa_name/text_color = " + fa_name + "/" + text_color);
+
+            return '<div class="dropdown-divider"></div>\
+                <a href="#" class="dropdown-item text-sm">\
+                    <span class="float-left text-muted text-sm mr-3">'+time+'</span>\
+                  <i class="nav-icon fas fa-'+ fa_name + ' ' + text_color + ' mr-2"></i>'
+                + todo +
+                // '<span class="float-right text-muted text-sm">' + time + '</span>\
+                '</a>';
+        }
+
+        //Notify History Logs
+        let init15NotifyHistoryLogsToday = async () => {
+
+            //Clear All Msg and Set Header & Footer
+            $('#_notifyHead_HL').html('<span id="_notifySpan_HL" class="dropdown-item dropdown-header">ประวัติการใช้งาน 15 รายการล่าสุดของวันนี้</span>\
+                                         <div id="_notifyFooter_HL" class="dropdown-divider"></div>\
+                                         <a href="/history_logs" class="dropdown-item dropdown-footer">ดูประวัติการใช้งานทั้งหมด</a>');
+
+            let user = await getThisUser();
+            // alert("user getThisUser = " + JSON.stringify(user));
+            let my_u_id = user.id;
+            // alert("my_u_id = " + my_u_id);
+
+            // alert($('#_notifyHead_HL').html());
+
+            await $.ajax({
+                url: '/_get15LastHistoryLogs',
+                method: 'GET',
+                contentType: 'application/json',
+                success: async function (resp) {
+                    // alert("get15LastHistoryLogs resp = " + JSON.stringify(resp));
+
+                    let { history_logs } = resp;
+
+                    let date_now = new Date();
+                    let today_YYYYMMDD = parseInt(formatDate_YYYY_MM_DD(date_now).replace(/-/g, ''));
+                    // alert("today_YYYYMMDD = "+today_YYYYMMDD);
+                    
+                    let u_unread = 0;
+                    let isFoundMe = false;
+                    let i = 0;
+                    for (let obj of history_logs) {
+                        let date_log_YYYYMMDD = parseInt((obj.date_str).substr(0,10).replace(/-/g, ''));
+                        // alert("date_log_YYYYMMDD = "+date_log_YYYYMMDD);
+
+                        if (date_log_YYYYMMDD < today_YYYYMMDD) {
+                            break;
+                        }
+
+                        if (!isFoundMe) {
+                            if (obj.u_id == my_u_id && i!=0) {
+                                isFoundMe = true;
+                            } else {
+                                u_unread++;
+                            }
+                        }
+
+                        let time = ((obj.date_str).split(" "))[1];
+                        let html_notify = convertToNotifyMsg(obj.todo, time);
+                        // alert(obj.u_id+" todo="+obj.todo + "\nobj.date_str=" + obj.date_str+ "\n"+html_notify);
+
+                        // $('#_notifySpan_HL').after(html_notify);
+                        $('#_notifyFooter_HL').before(html_notify);
+
+                        i++;
+                    }
+                    // alert("u_unread = "+u_unread);
+                    let unread = await getSetUnread();
+                    // alert('abc unread = '+unread);
+                    if(!unread && unread!=0){
+                        unread = await getSetUnread(u_unread);
+                    }
+                    $('#_unreadNo').html(unread==0? "":unread);
+                    let old_title = $('title').html();
+                    if(old_title.includes('หน้าแรก')){
+                        unread = unread==0? "" : "("+unread+")";
+                        $('title').html(unread+' '+(old_title.indexOf('(')==0? old_title.substr(old_title.indexOf(')')+1) : old_title));
+                    }
+                }
+            });
+        }
+        init15NotifyHistoryLogsToday();
+
+        $('#_btnNotifyHL').click(async function(){
+            $('#_unreadNo').html("");
+            await getSetUnread(0);
+            // alert('xyz unread = '+unread);
+            let old_title = $('title').html();
+            if(old_title.includes('หน้าแรก')){
+                $('title').html(old_title.indexOf('(')==0? old_title.substr(old_title.indexOf(')')+1) : old_title);
+            }
+        });
+
+        //Socket receive broadcast from Server
+        socket.on('__broadcast_todo__', async (data)=>{
+            // let { todo, time } = data;
+            let { todo } = data;
+            // alert("__broadcast_todo__ data = "+JSON.stringify(data));
+            
+            // alert(new Date());
+            let date = new Date();
+            let H = date.getHours();         //Local Time from Client's computer
+            let M = date.getMinutes();
+            let HH = "00".substr((""+H).length)+H;
+            let MM = "00".substr((""+M).length)+M;
+            let time = HH+":"+MM;
+
+            let html_notify = convertToNotifyMsg(todo, time);
+            $('#_notifySpan_HL').after(html_notify);
+
+            let unread = await getSetUnread();
+            // alert('bc_todo unread = '+unread);
+            unread = await getSetUnread(unread+1);
+            $('#_unreadNo').html(unread);
+
+            let old_title = $('title').html();
+            if(old_title.includes('หน้าแรก')){
+                $('title').html('('+unread+') '+(old_title.indexOf('(')==0? old_title.substr(old_title.indexOf(')')+1) : old_title));
+            }
+
+
+            //Update Realtime for Home (Dashboard) Page
+            // alert('todo = '+todo+' ('+todo.includes('บิล')+')');
+            if(todo.includes('บิล')){
+                // alert('UPDATED');
+                setTimeout(() => {
+                    initComponents();
+                    initPieChart();
+                    initBarChart();
+                    getDepositCostToDataTable();
+                    getDepositRemDaysToDataTable();
+                }, 200);
+            }
+        });
+
+    });
+
+</script>

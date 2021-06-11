@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/header.ejs') %>
+
+<body>
+    <div class="wrapper">
+
+        <!-- < %- include('partials/navbar.ejs') %> -->
+        <!-- < %- include('partials/sidebar.ejs') %> -->
+
+        <!-- <div class="content-wrapper"> -->
+        <div>
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- <div class="col-sm-6"> -->
+                        <div class="col-sm text-center">
+                            <h5 class="text-dark">
+                                <img src="/img/etraining-logo-fit.png" class="img-circle mr-2" style="opacity: .8;width: 66px;height: 66px;">
+                                <%= header_name %>
+                            </h5>
+                        </div>
+                        <!--  /.col ->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                <li class="breadcrumb-item active">ประวัติการใช้งานระบบ</li>
+                            </ol>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+
+                            <div class="alert alert-primary text-center" role="alert" id="_alertFound" style="display:none"></div>
+                            <div class="alert alert-warning text-center" role="alert" id="_alertNotFound" style="display:none"></div>
+
+                            <div class="card">
+                                <!-- 
+                                    <div class="card-header" style="background-color: #d3cbc6;">
+                                    <div class="row">
+                                        <label for="_drp_beginDate" class="pt-1 col-form-label d-none d-inline-block">คัดกรองประวัติจาก วันที่ทำรายการ:
+                                        </label>
+                                        <div id="_drp_beginDate" class=" text-sm form-control form-control-sm font-weight-bold mx-2" 
+                                            style="font-size: 105%; background: #fff; cursor: pointer; padding: 5px 10px; width: 240px;">
+                                            <i class="far fa-calendar-alt"></i> &nbsp; 
+                                            <span></span> &nbsp; <i class="fa fa-caret-down"></i>
+                                        </div>
+                                    </div>
+                                </div> 
+                                -->
+                                <!-- /.card-header -->
+
+                                <div class="card-body">
+                                    <table id="_tablePadlets"
+                                        class="table text-sm table-bordered table-striped table-hover display nowrap"
+                                        width="100%">
+                                        <thead class="text-center text-light" style="background-color: #ff6200;">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Padlet-Code</th>
+                                                <th>ชื่อเรื่อง</th>
+                                                <th>Padlet ต้นฉบับ</th>
+                                                <th>Padlet สำรอง</th>
+                                                <th>นักศึกษาผู้จัดทำ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+
+                        </div>
+                        <!-- /.col-12 -->
+                    </div>
+                    <!-- /.row -->
+
+                </div>
+                <!-- .container-fluid -->
+            </section>
+            <!-- .content -->
+        </div>
+        <!-- .content-wrapper -->
+
+        <!-- < %- include('partials/footer.ejs') %> -->
+
+    </div>
+    <!-- .wrapper -->
+
+    <%- include('partials/script_src.ejs') %>
+    <%- include('partials/script_extend.ejs') %>
+
+    <script>
+        //Set actived menu "ประวัติการใช้งานระบบ"
+        // $("#_menu3-0").addClass("active");
+
+
+        $(function () {
+
+            let data_padlets = {};
+            let _tablePadlets = $("#_tablePadlets").DataTable({
+                pageLength: 10,
+                // order: [[0, "desc"]],
+                scrollX: true,
+                // scrollY: 300,
+                // scrollCollapse: true, 
+                columns: [
+                    { data: "no" },
+                    { data: "pl_code" },
+                    { data: "pl_name" },
+                    { data: "pl_original_url" },
+                    { data: "pl_backup_url" },
+                    { data: "students" },
+                ],
+                columnDefs: [
+                    {
+                        // targets: 1,
+                        // searchable: false,
+                        // orderable: false,
+                    }
+                ],
+                language: {
+                    lengthMenu: 'แสดงข้อมูล : <select class="form-control">' +
+                        '<option value="5">5</option>' +
+                        '<option value="10">10</option>' +
+                        '<option value="20">20</option>' +
+                        '<option value="30">30</option>' +
+                        '<option value="50">50</option>' +
+                        '<option value="100">100</option>' +
+                        '<option value="-1">All</option>' +
+                        '</select> แถว/หน้า',
+                    search: "ค้นหาขั้นเทพ :",
+                    info: "แสดงข้อมูล แถวที่ _START_ - _END_  จาก _TOTAL_ แถว",
+                    infoEmpty: "แสดงข้อมูล แถวที่ 0 - 0  จาก 0 แถว",
+                    infoFiltered: "(ค้นหาจากข้อมูลทั้งหมด _MAX_ แถว)",
+                    zeroRecords: "ไม่พบข้อมูลที่กำลังค้นหา",
+                    paginate: {
+                        "first": "หน้าแรก",
+                        "last": "หน้าสุดท้าย",
+                        "next": "หน้าถัดไป",
+                        "previous": "หน้าก่อน"
+                    }
+                },
+                rowCallback: function(row, data, index){
+                    $(row).find('td:eq(0)').css({'text-align':'right'});
+                    $(row).find('td:eq(1)').css({'text-align':'center', 'font-weight':'bold'});
+                    $(row).find('td:eq(2)').css({'text-align':'center', 'font-weight':'bold'});
+                    // $(row).find('td:eq(3)').css({'font-weight':'bold'});
+                }
+                // retrieve: true
+                // responsive: true,
+                // searching: false,    //default=true
+                // ordering: false      //default=true
+                // lengthChange: false, //default=true
+                // paging: false,       //default=true
+                // autoWidth: false,    //default=true
+                // info: false,         //default=true
+            });
+
+            let getPadletsToDataTable = () => {
+                /*
+                let start_date = new Date(_start);
+                let end_date = new Date(_end);
+                */
+                // alert(start_date+" and "+end_date);
+
+                $.ajax({
+                    url: '/_getPadlets',
+                    /*
+                    method: 'POST',
+                    data: JSON.stringify({ start_date, end_date }),
+                    */
+                    method: 'GET',
+                    contentType: 'application/json',
+                    success: function (resp) {
+                        let { padlets } = resp;
+                        // alert("getPadlets history_logs = "+JSON.stringify(padlets));
+                        data_padlets = padlets;
+
+                        let dataTable_padlets = $.map(padlets, function (obj, i) {
+                            obj.no = obj.id;
+                            obj.pl_code = obj.code;
+                            obj.pl_name = obj.name;
+                            obj.pl_original_url = '<div class="text-center"><a href="'+obj.original_url+'" target="_blank"><img src="/img/'+obj.code+'.png" style="opacity: .8;width: 180px;height: 98px;"></a></div>';
+                            obj.pl_backup_url = '<div><a href="/padlet_backup/'+obj.backup_url+'" target="_blank">'+obj.backup_url+'</a></div>';
+                            obj.students = 'ห้อง '+obj.students;
+
+                            return obj;
+                        });
+                        // alert('dataTable_padlets = ' + JSON.stringify(dataTable_padlets));
+
+                        _tablePadlets.clear().draw();
+                        _tablePadlets.rows.add(dataTable_padlets).draw();
+                    }
+                });
+            }
+            getPadletsToDataTable();
+
+
+            //Solved DataTable Header auto-width failed
+            /*
+            $('#_hamburger').click(function(){
+                // alert("click hamburger");
+                setTimeout(function(){
+                    _tablePadlets.columns.adjust().draw();
+                }, 300);
+            });
+            */
+
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/header.ejs') %>
+
+<body class="hold-transition login-page">
+  
+    <div class="login-box">
+        <div class="login-logo">
+          <div><img class="img-circle" src="/img/elearning-logo-fit.png"></div>
+        </div>
+        <!-- /.login-logo -->
+        <div class="card">
+          <div class="card-body login-card-body">
+            <!-- <p class="login-box-msg">Sign in to start your session</p> -->
+            <div class="login-box-msg">
+            <span class="btn btn-outline-dark"><b>Krukukkai MVC 2021</b> </span>
+            <!-- <span class="btn btn-outline-secondary">by <b>KakaMik</b></span> -->
+            </div>
+      
+            <form id="_form_login" action="" method="post">
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Username"  name="username" 
+                  oninvalid="this.setCustomValidity('กรุณากรอก Username หรือ รหัสนักศึกษา')"
+                  oninput="setCustomValidity('')" required>
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-user"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <input type="password" class="form-control" placeholder="Password" name="password"
+                  oninvalid="this.setCustomValidity('กรุณากรอก Password')"
+                  oninput="setCustomValidity('')" required>
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-4">
+                  <button id="_btnLogin" type="submit" class="btn btn-primary btn-block">Log in</button>
+                </div>
+                <!-- /.col -->
+              </div>
+            </form>
+      
+          </div>
+          <!-- /.login-card-body -->
+
+          <div class="alert alert-danger text-center" style="display: none;"></div>
+        </div>
+        <!-- /.login-card -->
+      </div>
+      <!-- /.login-box -->
+      
+
+    <!-- < %- include('partials/footer.ejs') % > -->
+
+    <%- include('partials/script_src.ejs') %>
+
+</body>
+
+</html>
+
+<script>
+  let socket = io();
+
+  $(function(){
+
+    $('#_form_login').on('submit', function(e){
+      e.preventDefault();
+
+      $('#_btnLogin').prop('disabled',true);
+
+      let username = $('input[name="username"]').val();
+      let password = $('input[name="password"]').val();
+      // alert("Login Form u/p = "+username+"/"+password);
+      
+      $.ajax({
+        url: '/_submitLogin',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({username, password}),
+        success: function(resp){
+          // alert("resp = "+JSON.stringify(resp));
+          // let { isFoundMember, todo, time } = resp;
+          let { isFoundMember, todo } = resp;
+          if(isFoundMember){
+            $('.alert-danger').fadeOut('fast');
+            location.href = '/';
+
+            // socket.emit('__user_todo__', { todo, time });
+            // socket.emit('__user_todo__', { todo });
+            if(todo!="VVIP"){
+              socket.emit('__user_todo__', { todo });
+            }
+          }else {
+            $('.alert-danger').html('กรอก Username หรือ Password ไม่ถูกต้อง');
+            $('.alert-danger').fadeOut('fast');   
+            $('.alert-danger').fadeIn('fast');   
+          }
+        }
+      });
+
+      setTimeout(() => {
+        $('#_btnLogin').prop('disabled',false);
+      }, 900);
+    });
+
+    //MouseOver for Show Password
+    $('input[name="password"]')
+      .mouseover(function () {
+          $(this).attr('type', 'text');
+      })
+      .mouseout(function () {
+          $(this).attr('type', 'password');
+      });
+
+  });
+</script>
