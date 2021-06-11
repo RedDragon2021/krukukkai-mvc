@@ -1,0 +1,27 @@
+{
+  "name": "krukukkai-mvc_2021",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mongoose": "^5.10.9",
+    "socket.io": "^3.0.3"
+  },
+  "engines": {
+    "node": "12.19.0",
+    "npm": "6.14.8"
+  }
+}
